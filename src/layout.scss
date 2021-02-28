@@ -1,0 +1,10 @@
+$bgColor: rgb(0, 72, 255);
+$color: rgb(255, 234, 0);
+
+div{
+  background-color: $bgColor;
+  color: $color;
+  transform: scale(0.5);
+}
+
+
