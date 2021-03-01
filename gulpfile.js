@@ -6,6 +6,7 @@ const $ = require('gulp-load-plugins')();
 // const postcss = require('gulp-postcss');
 const autoprefixer = require('autoprefixer');
 
+
 gulp.task('jade', function () {
   gulp.src('./src/*.jade')
     .pipe($.plumber())
@@ -13,7 +14,7 @@ gulp.task('jade', function () {
     .pipe(gulp.dest('./dest/'))
 });
 
-gulp.task('copyHTML',function(){
+gulp.task('copyHTML', function () {
   return gulp.src('./src/**/*.html')
     .pipe($.plumber())
     .pipe(gulp.dest('./dest/'))
@@ -21,10 +22,10 @@ gulp.task('copyHTML',function(){
 
 
 gulp.task('sass', function () {
-    //  var plugins =  [
-    //   autoprefixer({browsers:['last 5 version']})
-    // ];
-  
+  //  var plugins =  [
+  //   autoprefixer({browsers:['last 5 version']})
+  // ];
+
   return gulp.src('./src/**/*.scss')
     .pipe($.plumber())
     .pipe($.sass().on('error', $.sass.logError))
@@ -33,9 +34,21 @@ gulp.task('sass', function () {
     .pipe(gulp.dest('./dest/css'));
 });
 
+gulp.task('babel', () => {
+  return gulp.src('src/*.js')
+    // .pipe(sourcemaps.init())
+    .pipe($.babel({
+      presets: ['@babel/env']
+    }))
+    .pipe($.concat('all.js'))
+    // .pipe(sourcemaps.write('.'))
+    .pipe(gulp.dest('./dest/js'))
+});
+
 gulp.task('watch', function () {
   gulp.watch('./src/*.scss', ['sass']);
   gulp.watch('./src/*.jade', ['jade']);
+  gulp.watch('./src/*.js', ['babel']);
 });
 
-gulp.task('default', ['jade', 'sass','watch']);
+gulp.task('default', ['jade', 'sass', 'babel', 'watch']);
