@@ -4,6 +4,7 @@ const $ = require('gulp-load-plugins')();
 // var sass = require('gulp-sass');
 // var plumber = require('gulp-plumber');
 // const postcss = require('gulp-postcss');
+const watch = require('gulp-watch');
 const autoprefixer = require('autoprefixer');
 
 
@@ -26,9 +27,9 @@ gulp.task('sass', function () {
   //   autoprefixer({browsers:['last 5 version']})
   // ];
 
-  return gulp.src('./src/**/*.scss')
+  return gulp.src('./src/**/*.sass')
     .pipe($.plumber())
-    .pipe($.sass().on('error', $.sass.logError))
+    .pipe($.sass({ indentedSyntax: true }).on('error', $.sass.logError))
     // .pipe($.postcss(plugins)) // 直接引入 autoprefixer
     .pipe($.postcss([autoprefixer()])) // 直接引入 autoprefixer
     .pipe(gulp.dest('./dest/css'));
@@ -36,17 +37,17 @@ gulp.task('sass', function () {
 
 gulp.task('babel', () => {
   return gulp.src('src/*.js')
-    // .pipe(sourcemaps.init())
+    .pipe($.sourcemaps.init())
     .pipe($.babel({
       presets: ['@babel/env']
     }))
     .pipe($.concat('all.js'))
-    // .pipe(sourcemaps.write('.'))
+    .pipe($.sourcemaps.write('.'))
     .pipe(gulp.dest('./dest/js'))
 });
 
 gulp.task('watch', function () {
-  gulp.watch('./src/*.scss', ['sass']);
+  gulp.watch('./src/*.sass', ['sass']);
   gulp.watch('./src/*.jade', ['jade']);
   gulp.watch('./src/*.js', ['babel']);
 });

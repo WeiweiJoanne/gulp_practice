@@ -1,4 +1,6 @@
-div {
-  background-color: #0048ff;
-  color: #ffea00;
-  transform: scale(2); }
+p {
+  color: #ffea00; }
+  p span {
+    display: inline-block; }
+  p a {
+    color: red; }
